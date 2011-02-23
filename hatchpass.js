@@ -14,15 +14,42 @@ function init_pw() {
   $c = $('#h_cont')
 }
 
-function main() {  
-  $('#hatchpass').fadeIn()
-}
-
 $(document).ready(function() {
   init_pw()
   
   $('input[type="password"]').bind('dblclick', function() {
-    main()
+    $('#hatchpass').fadeIn('fast')
+    $('#hatchpass input').focus()
+  })
+  
+  // Get submit
+  $('#hatchpass input').keyup(function(e){
+    if(e.keyCode == 13) { // Enter key
+      var master = $(this).val();
+      
+      if (options == "" || !options) {
+        var options = {
+            "master"  : master,
+  	   			"id"		  : ID,
+  	   			"symbols"	: "1",
+  	   			"caps"		: "1",
+  	   			"strlen"	: "10",
+  	   			"h_algorithm"	: "default"
+  	   		}
+      }
+      
+      $.get(loadUrl,{
+				master: master, 
+				host: host,
+				settings: options,
+				action: "makeHash"
+			},
+         function(data){
+           $pw.val(data);
+         });
+      $h.fadeOut('fast');
+      
+    }
   })
   
   // Close/cancel the popup
@@ -33,4 +60,8 @@ $(document).ready(function() {
   $c.click(function(event){
     event.stopPropagation();
   });
+  
+  $('form').submit(function() {
+    return false
+  })
 })
