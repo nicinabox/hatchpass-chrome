@@ -1,0 +1,19 @@
+{
+	"name": "Hatchpass Extension",
+	"version": "0.1",
+	"description": "Create strong, unique passwords for your online accounts. Don't remember any of them.",
+  "page_action": {
+    "default_icon": "icon.png",
+    "default_title": "Hatchpass options",
+    "default_popup": "background.html"
+  },
+  "permissions": [
+      "tabs", "http://*/*"
+    ],
+  "options_page": "options.html",
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "css": ["hatchpass.css"],
+    "js": ["jquery-1.5.js", "hatchpass.js"]
+  }]
+}
