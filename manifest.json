@@ -8,12 +8,13 @@
     "default_popup": "background.html"
   },
   "permissions": [
-      "tabs", "http://*/*"
+      "http://hatchpass.heroku.com/create"
     ],
   "options_page": "options.html",
   "content_scripts": [{
     "matches": ["<all_urls>"],
     "css": ["hatchpass.css"],
     "js": ["jquery-1.5.js", "hatchpass.js"]
-  }]
+  }],
+  "run_at": "document_end"
 }
