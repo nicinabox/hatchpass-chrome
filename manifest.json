@@ -2,6 +2,7 @@
 	"name": "Hatchpass Extension",
 	"version": "0.1",
 	"description": "Create strong, unique passwords for your online accounts. Don't remember any of them.",
+	"background_page": "background.html",
   "browser_action": {
     "default_icon": "images/icon.png",
     "default_title": "Hatchpass options",

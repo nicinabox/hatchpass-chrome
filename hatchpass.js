@@ -13,12 +13,13 @@ function removeSubdomain(hostname, keep) {
     return hostname.split(".").slice(-(keep || 2)).join(".")
 }
 
-$(document).ready(function() {  
-  var settings = $.parseJSON(localStorage.hp_chrome_settings)
-  $.each(settings, function(index, setting) {
-    $('#'+setting.name).val(setting.value)
-  })
-  
+$(document).ready(function() {
+  if (localStorage.hp_chrome_settings) {
+    var settings = $.parseJSON(localStorage.hp_chrome_settings)
+    $.each(settings, function(index, setting) {
+      $('#'+setting.name).val(setting.value)
+    })
+  }  
   
   $('#hatchpass_settings').bind('keyup change', function(event) {
  	  var settings = JSON.stringify(fields = $(this).serializeArray())
@@ -39,17 +40,23 @@ $(document).ready(function() {
     if(e.keyCode == 13) { // Enter key
       var master = $(this).val();
       $input = $(this)
-      var settings = $.parseJSON(localStorage.hp_chrome_settings)
-      console.log(settings)
-      $.get(loadUrl,{
-        key: settings[0].value,
-        master: master, 
-        domain: removeSubdomain(host),
-        settings: decodeURIComponent($.param(settings)),
-      }, function(data) {
-        $input.parents('#hatchpass').next(".hp_password").val(data);
-        $('#h_input').val('')
-        $('#hatchpass').fadeOut('fast');
+      chrome.extension.sendRequest({action: "get_settings"}, function(response) {
+        settings = $.parseJSON(response.settings)
+        params = [
+          { "name": "master", "value": master },
+          { "name": "domain", "value": removeSubdomain(host) }
+        ]
+        
+        $.each(params, function(index, param) {
+          settings.push(param)
+        })
+        settings = $.param(settings)
+        $.get(loadUrl+"?"+settings,{
+        }, function(data) {
+          $input.parents('#hatchpass').next(".hp_password").val(data);
+          $('#h_input').val('')
+          $('#hatchpass').fadeOut('fast');
+        })
       })
     }
   })
