@@ -1,6 +1,5 @@
 var host = self.location.hostname;
 var loadUrl = "http://hatchpass.org/create";
-var KEY = "fbb43"
 var html = "\
   <div id=\"h_cont\"> \
     <div id=\"hatchpass\"> \
@@ -15,10 +14,14 @@ function removeSubdomain(hostname, keep) {
 }
 
 $(document).ready(function() {  
-  var settings = localStorage.hp_chrome_settings  
+  var settings = $.parseJSON(localStorage.hp_chrome_settings)
+  $.each(settings, function(index, setting) {
+    $('#'+setting.name).val(setting.value)
+  })
   
-  $('#hatchpass_settings').change(function(event) {
- 	  var settings = $(this).serialize() 	  
+  
+  $('#hatchpass_settings').bind('keyup change', function(event) {
+ 	  var settings = JSON.stringify(fields = $(this).serializeArray())
  	  localStorage.hp_chrome_settings = settings
  	})
 
@@ -36,12 +39,13 @@ $(document).ready(function() {
     if(e.keyCode == 13) { // Enter key
       var master = $(this).val();
       $input = $(this)
-      
+      var settings = $.parseJSON(localStorage.hp_chrome_settings)
+      console.log(settings)
       $.get(loadUrl,{
-        key: KEY,
+        key: settings[0].value,
         master: master, 
         domain: removeSubdomain(host),
-        settings: localStorage.hp_chrome_settings,
+        settings: decodeURIComponent($.param(settings)),
       }, function(data) {
         $input.parents('#hatchpass').next(".hp_password").val(data);
         $('#h_input').val('')
