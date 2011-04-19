@@ -17,7 +17,11 @@ $(document).ready(function() {
   if (localStorage.hp_chrome_settings) {
     var settings = $.parseJSON(localStorage.hp_chrome_settings)
     $.each(settings, function(index, setting) {
-      $('#'+setting.name).val(setting.value)
+      if (setting.value == "on") {
+        $('#'+setting.name).attr('checked', setting.value) 
+      } else {
+        $('#'+setting.name).val(setting.value)
+      }
     })
   }  
   
