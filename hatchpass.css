@@ -1,6 +1,6 @@
 #h_cont {
   position:relative; 
-  display: inline;
+  display: inline-block;
 }
 #hatchpass {
   position:absolute;
@@ -12,7 +12,7 @@
   background:#efefef; 
   -webkit-border-radius: 3px;
   -webkit-box-shadow: 0 0 3px #222; 
-  -webkit-gradient(linear, left bottom, left top, color-stop(1, rgb(239,239,239)), color-stop(0.56, rgb(224,224,224)))
+  -webkit-gradient(linear, left bottom, left top, color-stop(1, rgb(239,239,239)), color-stop(0.56, rgb(224,224,224)))#
 }
 #h_options {
   display: none;

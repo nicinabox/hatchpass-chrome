@@ -17,7 +17,7 @@ $(document).ready(function() {
   if (localStorage.hp_chrome_settings) {
     var settings = $.parseJSON(localStorage.hp_chrome_settings)
     $.each(settings, function(index, setting) {
-      if (setting.value == "on") {
+      if (setting.value == "true") {
         $('#'+setting.name).attr('checked', setting.value) 
       } else {
         $('#'+setting.name).val(setting.value)
@@ -28,6 +28,7 @@ $(document).ready(function() {
   $('#hatchpass_settings').bind('keyup change', function(event) {
  	  var settings = JSON.stringify(fields = $(this).serializeArray())
  	  localStorage.hp_chrome_settings = settings
+ 	  console.log(settings)
  	})
 
   // Insert Into page
@@ -55,10 +56,11 @@ $(document).ready(function() {
           settings.push(param)
         })
         settings = $.param(settings)
+        console.log(settings)
         $.get(loadUrl+"?"+settings,{
         }, function(data) {
           $input.parents('#hatchpass').next(".hp_password").val(data);
-          $('#h_input').val('')
+          $('#pop_master').val('')
           $('#hatchpass').fadeOut('fast');
         })
       })
